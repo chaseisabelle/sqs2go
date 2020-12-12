@@ -32,6 +32,12 @@ func main() {
 		panic(err)
 	}
 
+	requeue, err = flags.Intz()
+
+	if err != nil {
+		panic(err)
+	}
+
 	client = &http.Client{}
 
 	err = sqs.Start()

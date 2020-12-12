@@ -33,6 +33,10 @@ func New(cfg *config.Config, han func(string) error, lgr func(error)) (*SQS2_, e
 
 	cli, err := sqsc.New(con)
 
+	if lgr == nil {
+		lgr = func(_ error) {}
+	}
+
 	return &SQS2_{
 		config:  cfg,
 		client:  cli,

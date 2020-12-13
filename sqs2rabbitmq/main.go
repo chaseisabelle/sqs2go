@@ -10,13 +10,25 @@ import (
 
 var channel *amqp.Channel
 var queue amqp.Queue
+var exchange *string
+var mandatory *bool
+var immediate *bool
+var contentType *string
 
 func main() {
 	hst := flag.String("rabbitmq-host", "localhost:5672", "the rabbitmq host")
 	usr := flag.String("rabbitmq-user", "guest", "the rabbitmq username")
 	pwd := flag.String("rabbitmq-pass", "guest", "the rabbitmq password")
 	que := flag.String("rabbitmq-queue", "", "the rabbitmq queue name")
-	dur := flag.Bool("durable")
+	dur := flag.Bool("durable", false, "durable? idk")
+	ad := flag.Bool("auto-delete", false, "auto delete?")
+	exc := flag.Bool("exclusive", false, "exclusive?")
+	nw := flag.Bool("no-wait", false, "no wait?")
+
+	exchange = flag.String("exchange", "", "exchange?")
+	mandatory = flag.Bool("mandatory", false, "mandatory?")
+	immediate = flag.Bool("immediate", false, "immediate?")
+	contentType = flag.String("content-type", "text/plain", "the content type")
 
 	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
 		println(err.Error())
@@ -55,12 +67,12 @@ func main() {
 	}()
 
 	queue, err = channel.QueueDeclare(
-		*que,  // name
-		false, // durable
-		false, // delete when unused
-		false, // exclusive
-		false, // no-wait
-		nil,   // arguments
+		*que, // name
+		*dur, // durable
+		*ad,  // delete when unused
+		*exc, // exclusive
+		*nw,  // no-wait
+		nil,  // arguments
 	)
 
 	if err != nil {
@@ -76,12 +88,12 @@ func main() {
 
 func handler(bod string) error {
 	return channel.Publish(
-		"",     // exchange
+		*exchange,  // exchange
 		queue.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+		*mandatory, // mandatory
+		*immediate, // immediate
 		amqp.Publishing{
-			ContentType: "text/plain",
+			ContentType: *contentType,
 			Body:        []byte(bod),
 		})
 }

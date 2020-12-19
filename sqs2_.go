@@ -60,6 +60,7 @@ func (s *SQS2_) Handler() func(string) error {
 func (s *SQS2_) Start() error {
 	cfg := s.Config()
 	cli := s.Client()
+	han := s.Handler()
 	wg := sync.WaitGroup{}
 
 	for w := 0; w < cfg.Workers; w++ {
@@ -77,7 +78,7 @@ func (s *SQS2_) Start() error {
 					continue
 				}
 
-				err = s.Handler()(bod)
+				err = han(bod)
 
 				if err != nil {
 					s.logger(err)

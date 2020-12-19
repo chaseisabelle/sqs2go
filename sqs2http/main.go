@@ -11,10 +11,11 @@ import (
 	"net/http"
 )
 
-var client *http.Client
-var to *string
-var method *string
-var requeue []int
+var client *http.Client //<< http client
+var to *string //<< http endpoint
+var method *string //<< http request method
+var requeue []int //<< only requeue if http response code meets one of these
+var onFail bool //<< if no requeue params given, default to requeue on any !2xx status code
 
 func main() {
 	to = flag.String("to", "", "the url to forward the messages to")
@@ -38,6 +39,7 @@ func main() {
 		panic(err)
 	}
 
+	onFail = len(requeue) == 0
 	client = &http.Client{}
 
 	err = sqs.Start()
@@ -64,15 +66,25 @@ func handler(bod string) error {
 		return err
 	}
 
-	for _, sc := range requeue {
-		if sc == res.StatusCode {
-			if err == nil {
-				err = fmt.Errorf("received %d response with no error", sc)
-			}
+	rsc := res.StatusCode
 
-			return err
+	if onFail && (rsc < 200 || rsc > 299) {
+		return statusCodeError(rsc, err)
+	}
+
+	for _, sc := range requeue {
+		if sc == rsc {
+			return statusCodeError(rsc, err)
 		}
 	}
 
 	return nil
+}
+
+func statusCodeError(sc int, err error) error {
+	if err == nil {
+		err = fmt.Errorf("received %d response with no error", sc)
+	}
+
+	return err
 }

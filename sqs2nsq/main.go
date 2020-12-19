@@ -4,7 +4,7 @@ import (
 	"flag"
 	"github.com/chaseisabelle/sqs2_"
 	"github.com/chaseisabelle/sqs2_/config"
-	nsq "github.com/nsqio/go-nsq"
+	"github.com/nsqio/go-nsq"
 )
 
 var producer *nsq.Producer

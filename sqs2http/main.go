@@ -9,21 +9,25 @@ import (
 	"github.com/chaseisabelle/sqs2_"
 	"github.com/chaseisabelle/sqs2_/config"
 	"net/http"
+	"strings"
 )
 
 var client *http.Client //<< http client
-var to *string //<< http endpoint
-var method *string //<< http request method
-var requeue []int //<< only requeue if http response code meets one of these
-var onFail bool //<< if no requeue params given, default to requeue on any !2xx status code
+var to *string          //<< http endpoint
+var method *string      //<< http request method
+var headers http.Header //<< http headers
+var requeue []int       //<< only requeue if http response code meets one of these
+var onFail bool         //<< if no requeue params given, default to requeue on any !2xx status code
 
 func main() {
 	to = flag.String("to", "", "the url to forward the messages to")
 	method = flag.String("method", "GET", "the request method to send the message with")
 
-	var flags flagz.Flagz
+	var requeueFlags flagz.Flagz
+	var headerFlags flagz.Flagz
 
-	flag.Var(&flags, "requeue", "the http status code to requeue a message for")
+	flag.Var(&requeueFlags, "requeue", "the http status code to requeue a message for")
+	flag.Var(&requeueFlags, "header", "the http headers")
 
 	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
 		println(err.Error())
@@ -33,7 +37,13 @@ func main() {
 		panic(err)
 	}
 
-	requeue, err = flags.Intz()
+	requeue, err = requeueFlags.Intz()
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = buildHeaders(headerFlags.Stringz())
 
 	if err != nil {
 		panic(err)
@@ -55,6 +65,8 @@ func handler(bod string) error {
 	if err != nil {
 		return err
 	}
+
+	req.Header = headers
 
 	res, err := client.Do(req)
 
@@ -87,4 +99,30 @@ func statusCodeError(sc int, err error) error {
 	}
 
 	return err
+}
+
+func buildHeaders(hdrs []string) error {
+	headers = http.Header{}
+
+	if hdrs == nil {
+		return nil
+	}
+
+	for _, h := range hdrs {
+		spl := strings.SplitAfterN(h, ":", 2)
+
+		if len(spl) != 2 {
+			return fmt.Errorf("invalid header: %s", h)
+		}
+
+		key := strings.TrimSpace(spl[0])
+
+		if key == "" {
+			return fmt.Errorf("invalid header: %s", h)
+		}
+
+		headers.Add(key, spl[1])
+	}
+
+	return nil
 }

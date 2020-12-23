@@ -1,5 +1,5 @@
 # sqs2_
-_forwarding agent for sqs_
+_forwarding agents for sqs_
 
 ---
 

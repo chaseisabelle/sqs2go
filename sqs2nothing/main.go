@@ -6,13 +6,13 @@ import (
 )
 
 func main() {
-	sqs, err := sqs2go.New(config.Load(), handler, nil)
+	s2g, err := sqs2go.New(config.Load(), handler, nil)
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = sqs.Start()
+	err = s2g.Start()
 
 	if err != nil {
 		panic(err)

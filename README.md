@@ -1,5 +1,7 @@
-# sqs2_
-_forwarding agents for sqs_
+# sqs2go
+_golang forwarding agents for sqs_
 
 ---
+
+### more coming soon!
 

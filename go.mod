@@ -1,4 +1,4 @@
-module github.com/chaseisabelle/sqs2_
+module github.com/chaseisabelle/sqs2go
 
 go 1.14
 

@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/streadway/amqp"
 )
 
@@ -30,7 +30,7 @@ func main() {
 	immediate = flag.Bool("immediate", false, "immediate?")
 	contentType = flag.String("content-type", "text/plain", "the content type")
 
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
 		println(err.Error())
 	})
 

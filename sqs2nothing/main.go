@@ -1,14 +1,12 @@
 package main
 
 import (
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 )
 
 func main() {
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
-		println(err.Error())
-	})
+	sqs, err := sqs2go.New(config.Load(), handler, nil)
 
 	if err != nil {
 		panic(err)

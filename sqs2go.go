@@ -1,22 +1,23 @@
-package sqs2_
+package sqs2go
 
 import (
 	"errors"
 	"fmt"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/chaseisabelle/sqsc"
 	"github.com/chaseisabelle/stop"
+	"os"
 	"sync"
 )
 
-type SQS2_ struct {
+type SQS2Go struct {
 	config  *config.Config
 	client  *sqsc.SQSC
 	handler func(string) error
 	logger  func(error)
 }
 
-func New(cfg *config.Config, han func(string) error, lgr func(error)) (*SQS2_, error) {
+func New(cfg *config.Config, han func(string) error, lgr func(error)) (*SQS2Go, error) {
 	if han == nil {
 		return nil, errors.New("handler required")
 	}
@@ -34,10 +35,12 @@ func New(cfg *config.Config, han func(string) error, lgr func(error)) (*SQS2_, e
 	cli, err := sqsc.New(con)
 
 	if lgr == nil {
-		lgr = func(_ error) {}
+		lgr = func(err error) {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	}
 
-	return &SQS2_{
+	return &SQS2Go{
 		config:  cfg,
 		client:  cli,
 		handler: han,
@@ -45,22 +48,27 @@ func New(cfg *config.Config, han func(string) error, lgr func(error)) (*SQS2_, e
 	}, err
 }
 
-func (s *SQS2_) Config() *config.Config {
+func (s *SQS2Go) Config() *config.Config {
 	return s.config
 }
 
-func (s *SQS2_) Client() *sqsc.SQSC {
+func (s *SQS2Go) Client() *sqsc.SQSC {
 	return s.client
 }
 
-func (s *SQS2_) Handler() func(string) error {
+func (s *SQS2Go) Handler() func(string) error {
 	return s.handler
 }
 
-func (s *SQS2_) Start() error {
+func (s *SQS2Go) Logger() func(error) {
+	return s.logger
+}
+
+func (s *SQS2Go) Start() error {
 	cfg := s.Config()
 	cli := s.Client()
 	han := s.Handler()
+	lgr := s.Logger()
 	wg := sync.WaitGroup{}
 
 	for w := 0; w < cfg.Workers; w++ {
@@ -73,7 +81,7 @@ func (s *SQS2_) Start() error {
 				bod, rh, err := cli.Consume()
 
 				if err != nil {
-					s.logger(err)
+					lgr(err)
 
 					continue
 				}
@@ -81,7 +89,7 @@ func (s *SQS2_) Start() error {
 				err = han(bod)
 
 				if err != nil {
-					s.logger(err)
+					lgr(err)
 
 					continue
 				}
@@ -89,7 +97,7 @@ func (s *SQS2_) Start() error {
 				_, err = cli.Delete(rh)
 
 				if err != nil {
-					s.logger(err)
+					lgr(err)
 				}
 			}
 		}(w)

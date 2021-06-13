@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/nsqio/go-nsq"
 )
 
@@ -14,7 +14,7 @@ func main() {
 	to := flag.String("to", "127.0.0.1:4150", "the nsq host to forward the messages to")
 	topic = flag.String("topic", "", "the nsq topic to publish to")
 
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
 		println(err.Error())
 	})
 

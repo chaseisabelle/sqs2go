@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/chaseisabelle/sqsc"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	endpoint2 := flag.String("endpoint2", "", "the aws endpoint")
 	delay = flag.Int("delay", 0, "the delay for the produced message")
 
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
 		println(err.Error())
 	})
 

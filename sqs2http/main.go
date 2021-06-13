@@ -6,8 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chaseisabelle/flagz"
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 	"net/http"
 	"strings"
 )
@@ -29,7 +29,7 @@ func main() {
 	flag.Var(&requeueFlags, "requeue", "the http status code to requeue a message for")
 	flag.Var(&requeueFlags, "header", "the http headers")
 
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
 		println(err.Error())
 	})
 

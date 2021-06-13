@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/chaseisabelle/sqs2_"
-	"github.com/chaseisabelle/sqs2_/config"
+	"github.com/chaseisabelle/sqs2go"
+	"github.com/chaseisabelle/sqs2go/config"
 	"os"
 )
 
@@ -18,7 +18,7 @@ func main() {
 	delimiter = flag.String("delimiter", "", "what to append to each write")
 	permissions = flag.Uint64("permissions", 0644, "file permissions")
 
-	sqs, err := sqs2_.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
 		println(err.Error())
 	})
 

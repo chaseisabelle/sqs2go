@@ -35,7 +35,7 @@ func main() {
 }
 
 // this is where you can implement your custom logic
-func handler(_ string) error {
+func handler(msg string) error {
 	...
 
 	return nil //<< return nil on success, or error to retry

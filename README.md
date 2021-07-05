@@ -52,6 +52,12 @@ logger := func(err error) {
 s2g, err := sqs2go.New(config.Load(), handler, logger)
 ```
 
+or supress error logging
+
+```go
+s2g, err := sqs2go.New(config.Load(), handler, func (_ error) {})
+```
+
 #### default flags/options
 
 ```

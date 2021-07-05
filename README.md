@@ -35,7 +35,7 @@ func main() {
 }
 
 // this is where you can implement your custom logic
-func handler(_ string) error {
+func handler(msg string) error {
 	...
 
 	return nil //<< return nil on success, or error to retry
@@ -78,3 +78,17 @@ s2g, err := sqs2go.New(config.Load(), handler, logger)
 -workers int
     the number of parallel workers to run (default 1)
 ```
+
+---
+
+### examples
+
+each of the `sqs2*` subdirectories are examples...
+* [sqs2nothing](./sqs2nothing) which consumes a message and drops it
+* [sqs2stdout](./sqs2stdout) which consumes a message and prints it to stdout
+* [sqs2file](./sqs2file) which consumes message and writes it to a file
+* [sqs2http](./sqs2http) which consumes a message and forwards it to an http endpoint
+* [sqs2sqs](./sqs2sqs) which consumes a message and forwards it to another sqs queue
+* [sqs2rabbitmq](./sqs2rabbitmq) which consumes a message and forwards it to a rabbitmq queue
+* [sqs2nsq](./sqs2nsq) which consumes a message and forwards it to an nsq queue
+* don't see what you're looking for? contribute! 

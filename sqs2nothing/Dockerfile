@@ -1,16 +1,24 @@
-FROM golang:alpine
+# builder image
+FROM golang:1.17.1-alpine3.14 as sqs2nothing-builder
 
-RUN apk update && apk add --no-cache git
+RUN mkdir /build
 
-WORKDIR $GOPATH/src/sqs2nothing/
+ADD *.go /build/
+ADD go.mod /build/
+ADD go.sum /build/
 
-COPY main.go .
-COPY go.* ./
+WORKDIR /build
 
 RUN go get -d -v
-RUN go build -o /go/bin/sqs2nothing
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o sqs2nothing .
 
-CMD /go/bin/sqs2nothing \
+
+# generate clean, final image for end users
+FROM alpine:3.14
+
+COPY --from=sqs2nothing-builder /build/sqs2nothing .
+
+CMD ./sqs2nothing \
     --workers=$WORKERS \
     --id=$AWS_ID \
     --key=$AWS_KEY \

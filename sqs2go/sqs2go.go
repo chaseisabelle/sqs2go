@@ -74,7 +74,7 @@ func (s *SQS2Go) Start() error {
 	for w := 0; w < cfg.Workers; w++ {
 		wg.Add(1)
 
-		go func(w int) {
+		go func() {
 			defer wg.Done()
 
 			for !stop.Stopped() {
@@ -100,7 +100,7 @@ func (s *SQS2Go) Start() error {
 					lgr(err)
 				}
 			}
-		}(w)
+		}()
 	}
 
 	wg.Wait()

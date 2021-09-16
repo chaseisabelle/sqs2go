@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/chaseisabelle/sqs2go"
-	"github.com/chaseisabelle/sqs2go/config"
 	"os"
 )
 
@@ -26,7 +24,7 @@ func main() {
 		panic(err)
 	}
 
-	file, err = os.OpenFile(*filename, os.O_CREATE | os.O_WRONLY | os.O_APPEND, os.FileMode(*permissions))
+	file, err = os.OpenFile(*filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.FileMode(*permissions))
 
 	if err != nil {
 		panic(err)

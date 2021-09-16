@@ -3,7 +3,7 @@ package sqs2go
 import (
 	"errors"
 	"fmt"
-	"github.com/chaseisabelle/sqs2go/sqs2go/config"
+	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/chaseisabelle/sqsc"
 	"github.com/chaseisabelle/stop"
 	"os"

@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/chaseisabelle/sqs2go"
 	"github.com/chaseisabelle/sqs2go/config"
+	"github.com/chaseisabelle/sqs2go/sqs2go"
 	"github.com/chaseisabelle/sqsc"
 )
 

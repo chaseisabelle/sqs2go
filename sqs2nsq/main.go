@@ -2,9 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/chaseisabelle/sqs2go"
 	"github.com/chaseisabelle/sqs2go/config"
-	"github.com/nsqio/go-nsq"
+	"github.com/chaseisabelle/sqs2go/sqs2go"
 )
 
 var producer *nsq.Producer

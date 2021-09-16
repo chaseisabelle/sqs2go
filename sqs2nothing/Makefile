@@ -8,4 +8,4 @@ go:
 	make build && make run
 
 rmi:
-	 docker rmi sqs2go/sqs2nothing:latest
+	 docker rmi -f sqs2go/sqs2nothing:latest

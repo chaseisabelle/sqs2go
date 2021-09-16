@@ -6,8 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chaseisabelle/flagz"
-	"github.com/chaseisabelle/sqs2go"
 	"github.com/chaseisabelle/sqs2go/config"
+	"github.com/chaseisabelle/sqs2go/sqs2go"
 	"net/http"
 	"strings"
 )

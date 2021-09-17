@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
+	config2 "github.com/chaseisabelle/sqs2go/sqs2go/config"
 )
 
 var delimiter *string
@@ -12,7 +13,7 @@ var delimiter *string
 func main() {
 	delimiter = flag.String("delimiter", "", "what to append to each write")
 
-	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
+	sqs, err := sqs2go.New((*config2.Config)(config.Load()), handler, func(err error) {
 		println(err.Error())
 	})
 

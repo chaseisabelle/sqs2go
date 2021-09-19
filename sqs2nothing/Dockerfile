@@ -1,5 +1,5 @@
 # builder image
-FROM golang:1.17.1-alpine3.14 as sqs2nothing-builder
+FROM golang:1.17.1-alpine3.14 AS sqs2nothing-builder
 
 RUN mkdir /build
 
@@ -13,8 +13,8 @@ RUN go get -d -v
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o sqs2nothing .
 
 
-# generate clean, final image for end users
-FROM alpine:3.14
+# final image
+FROM alpine:3.14 AS sqs2nothing
 
 COPY --from=sqs2nothing-builder /build/sqs2nothing .
 

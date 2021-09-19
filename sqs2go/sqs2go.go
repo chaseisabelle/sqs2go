@@ -21,13 +21,9 @@ type Configuration struct {
 	SQSC    *sqsc.Config
 }
 
-func New(han func(string) error, lgr func(error), cfg *Configuration) (*SQS2Go, error) {
+func New(han func(string) error, lgr func(error)) (*SQS2Go, error) {
 	if han == nil {
 		return nil, errors.New("handler required")
-	}
-
-	if cfg.Workers < 1 {
-		return nil, fmt.Errorf("1 or more workers required. invalid value %d", cfg.Workers)
 	}
 
 	if lgr == nil {
@@ -45,7 +41,7 @@ func New(han func(string) error, lgr func(error), cfg *Configuration) (*SQS2Go, 
 		logger:  lgr,
 	}
 
-	return s2g, s2g.Configure(cfg)
+	return s2g, nil
 }
 
 func (s *SQS2Go) Configure(cfg *Configuration) error {
@@ -102,6 +98,15 @@ func (s *SQS2Go) Logger() func(error) {
 
 func (s *SQS2Go) Start() error {
 	cfg := s.Configuration()
+
+	if cfg == nil {
+		return errors.New("not configured")
+	}
+
+	if cfg.Workers < 1 {
+		return fmt.Errorf("1 or more workers required. invalid value %d", cfg.Workers)
+	}
+
 	han := s.Handler()
 	lgr := s.Logger()
 

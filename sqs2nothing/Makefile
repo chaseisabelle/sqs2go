@@ -1,6 +1,12 @@
 build:
 	docker build -f Dockerfile -t sqs2go/sqs2nothing:latest .
 
+push:
+	docker push chaseisabelle/sqs2nothing:latest
+
+release:
+	make build && make push
+
 run:
 	docker run -it --rm sqs2go/sqs2nothing:latest
 

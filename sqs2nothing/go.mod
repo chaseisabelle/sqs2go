@@ -2,7 +2,7 @@ module github.com/chaseisabelle/sqsgo/sqs2nothing
 
 go 1.17
 
-require github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210919224509-111fc17070a1
+require github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210919233048-918a8d188699
 
 require (
 	github.com/aws/aws-sdk-go v1.40.45 // indirect

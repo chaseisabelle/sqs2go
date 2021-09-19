@@ -1,5 +1,7 @@
 github.com/aws/aws-sdk-go v1.30.1 h1:cUMxtoFvIHhScZgv17tGxw15r6rVKJHR1hsIFRx9hcA=
 github.com/aws/aws-sdk-go v1.30.1/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
+github.com/chaseisabelle/backoff v0.0.0-20201003133051-8fca5c0f3877 h1:YTc2/2Tv2X3miO9JHjFW3Z/OUFahvS0hyhPn/8qMVTc=
+github.com/chaseisabelle/backoff v0.0.0-20201003133051-8fca5c0f3877/go.mod h1:Tq754NQvmEAIPplCGgzQMapNN+xFdcoIWXDIYwtYgsU=
 github.com/chaseisabelle/sqsc v0.0.0-20210611213716-4db4d5bb757a h1:VvQ1HgVgnGBw3fcviHOX6Qeywi+o65uNQ3TRMcu84sM=
 github.com/chaseisabelle/sqsc v0.0.0-20210611213716-4db4d5bb757a/go.mod h1:KtceEpuv11C4UG3p/VKwJ1G5r00vzyOkzH8JAMkKM40=
 github.com/chaseisabelle/stop v0.0.0-20201003115420-86920b703005 h1:mmqXf4C3auxWjO1yKWMVPvTQtquvmxcoOAlLEm6NttE=

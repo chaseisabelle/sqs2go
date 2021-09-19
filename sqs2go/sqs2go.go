@@ -8,6 +8,7 @@ import (
 	"github.com/chaseisabelle/stop"
 	"os"
 	"sync"
+	"time"
 )
 
 type SQS2Go struct {
@@ -18,6 +19,7 @@ type SQS2Go struct {
 
 type Configuration struct {
 	Workers int
+	Backoff int
 	SQSC    *sqsc.Config
 }
 
@@ -52,6 +54,7 @@ func (s *SQS2Go) Configure(cfg *Configuration) error {
 	}
 
 	workers := flag.Int("workers", 1, "the number of parallel workers to run")
+	backoff := flag.Int("backoff", 250, "interval (milliseconds) between checking for new message after receiving no message")
 	id := flag.String("id", "", "aws account id (leave blank for no-auth)")
 	key := flag.String("key", "", "aws account key (leave blank for no-auth)")
 	secret := flag.String("secret", "", "aws account secret (leave blank for no-auth)")
@@ -65,8 +68,17 @@ func (s *SQS2Go) Configure(cfg *Configuration) error {
 
 	flag.Parse()
 
+	if *workers <= 0 {
+		return errors.New("must have 1 or more workers")
+	}
+
+	if *backoff < 0 {
+		return errors.New("backoff must be greater than or equal to 0")
+	}
+
 	s.configuration = &Configuration{
 		Workers: *workers,
+		Backoff: *backoff,
 		SQSC: &sqsc.Config{
 			ID:       *id,
 			Key:      *key,
@@ -107,6 +119,10 @@ func (s *SQS2Go) Start() error {
 		return fmt.Errorf("1 or more workers required. invalid value %d", cfg.Workers)
 	}
 
+	if cfg.Backoff < 0 {
+		return fmt.Errorf("0 or more millisecond backoff required. invalid value %d", cfg.Backoff)
+	}
+
 	han := s.Handler()
 	lgr := s.Logger()
 
@@ -116,6 +132,7 @@ func (s *SQS2Go) Start() error {
 		return err
 	}
 
+	bo := time.Duration(cfg.Backoff) * time.Millisecond
 	wg := sync.WaitGroup{}
 
 	for w := 0; w < cfg.Workers; w++ {
@@ -134,6 +151,8 @@ func (s *SQS2Go) Start() error {
 				}
 
 				if bod == "" && rh == "" {
+					time.Sleep(bo)
+
 					continue
 				}
 

@@ -15,3 +15,12 @@ go:
 
 rmi:
 	 docker rmi -f sqs2go/sqs2nothing:latest
+
+get:
+	go get github.com/chaseisabelle/sqs2go/sqs2go
+
+tidy:
+	go mod tidy
+
+sync:
+	make get && make tidy

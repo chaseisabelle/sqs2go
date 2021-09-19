@@ -133,6 +133,10 @@ func (s *SQS2Go) Start() error {
 					continue
 				}
 
+				if bod == "" && rh == "" {
+					continue
+				}
+
 				err = han(bod)
 
 				if err != nil {

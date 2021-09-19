@@ -5,7 +5,13 @@ import (
 )
 
 func main() {
-	s2g, err := sqs2go.New(handler, nil, nil)
+	s2g, err := sqs2go.New(handler, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = s2g.Configure(nil)
 
 	if err != nil {
 		panic(err)

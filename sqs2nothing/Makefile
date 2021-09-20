@@ -23,4 +23,4 @@ tidy:
 	go mod tidy
 
 sync:
-	make get && make tidy
+	go clean --modcache && make get && make tidy

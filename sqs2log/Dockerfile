@@ -1,5 +1,5 @@
 # builder image
-FROM golang:1.17.1-alpine3.14 AS sqs2stdout-builder
+FROM golang:1.17.1-alpine3.14 AS sqs2log-builder
 
 RUN mkdir /build
 
@@ -10,15 +10,15 @@ ADD go.sum /build/
 WORKDIR /build
 
 RUN go get -d -v
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o sqs2stdout .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o sqs2log .
 
 
 # final image
-FROM alpine:3.14 AS sqs2stdout
+FROM alpine:3.14 AS sqs2log
 
-COPY --from=sqs2stdout-builder /build/sqs2stdout .
+COPY --from=sqs2log-builder /build/sqs2log .
 
-CMD ./sqs2stdout \
+CMD ./sqs2log \
     --workers=$WORKERS \
     --id=$AWS_ID \
     --key=$AWS_KEY \

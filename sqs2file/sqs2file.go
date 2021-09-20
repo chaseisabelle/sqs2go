@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/chaseisabelle/sqs2go/sqs2go"
 	"os"
 )
 
@@ -16,9 +17,13 @@ func main() {
 	delimiter = flag.String("delimiter", "", "what to append to each write")
 	permissions = flag.Uint64("permissions", 0644, "file permissions")
 
-	sqs, err := sqs2go.New(config.Load(), handler, func(err error) {
-		println(err.Error())
-	})
+	s2g, err := sqs2go.New(handler, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = s2g.Configure(nil)
 
 	if err != nil {
 		panic(err)
@@ -30,7 +35,7 @@ func main() {
 		panic(err)
 	}
 
-	err = sqs.Start()
+	err = s2g.Start()
 
 	if err != nil {
 		panic(err)

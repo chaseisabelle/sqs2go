@@ -3,9 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/chaseisabelle/sqs2go/config"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
-	config2 "github.com/chaseisabelle/sqs2go/sqs2go/config"
 )
 
 var delimiter *string
@@ -13,15 +11,19 @@ var delimiter *string
 func main() {
 	delimiter = flag.String("delimiter", "", "what to append to each write")
 
-	sqs, err := sqs2go.New((*config2.Config)(config.Load()), handler, func(err error) {
-		println(err.Error())
-	})
+	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = sqs.Start()
+	err = s2g.Configure(nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = s2g.Start()
 
 	if err != nil {
 		panic(err)
@@ -29,7 +31,7 @@ func main() {
 }
 
 func handler(bod string) error {
-	print(fmt.Sprintf("%s%s", bod, *delimiter))
+	fmt.Printf("%s%s", bod, *delimiter)
 
 	return nil
 }

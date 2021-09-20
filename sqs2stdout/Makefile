@@ -1,11 +1,26 @@
 build:
-	docker build -f Dockerfile -t sqs2go/sqs2nothing:latest .
+	docker build --no-cache -f Dockerfile -t chaseisabelle/sqs2stdout:latest .
+
+push:
+	docker push chaseisabelle/sqs2stdout:latest
+
+release:
+	make build && make push
 
 run:
-	docker run -it --rm sqs2go/sqs2nothing:latest
+	docker run -it --rm chaseisabelle/sqs2stdout:latest
 
 go:
 	make build && make run
 
 rmi:
-	 docker rmi -f sqs2go/sqs2nothing:latest
+	 docker rmi -f chaseisabelle/sqs2stdout:latest
+
+get:
+	go get github.com/chaseisabelle/sqs2go/sqs2go
+
+tidy:
+	go mod tidy
+
+sync:
+	go clean --modcache && make get && make tidy

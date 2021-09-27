@@ -1,4 +1,4 @@
-# sqs2nothing
+# sqs2file
 
 _forward messages from sqs to a file_
 

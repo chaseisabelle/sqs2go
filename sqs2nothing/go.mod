@@ -1,4 +1,4 @@
-module github.com/chaseisabelle/sqsgo/sqs2nothing
+module sqs2nothing
 
 go 1.17
 

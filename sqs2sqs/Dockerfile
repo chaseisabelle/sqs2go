@@ -18,7 +18,7 @@ FROM alpine:3.14 AS sqs2sqs
 
 COPY --from=sqs2sqs-builder /build/sqs2sqs .
 
-CMD ./sqs2nothing \
+CMD ./sqs2sqs \
     --workers=$WORKERS \
     --id=$AWS_ID \
     --key=$AWS_KEY \
@@ -29,5 +29,12 @@ CMD ./sqs2nothing \
     --endpoint=$QUEUE_ENDPOINT \
     --retries=$MAX_RETRIES \
     --timeout=$VISIBILITY_TIMEOUT \
-    --wait=$WAIT_TIME
-    --producer-id=$
+    --wait=$WAIT_TIME \
+    --producer-id=$PRODUCER_ID \
+    --producer-key=$PRODUCER_KEY \
+    --producer-secret=$PRODUCER_SECRET \
+    --producer-region=$PRODUCER_REGION \
+    --producer-url=$PRODUCER_URL \
+    --producer-queue=$PRODUCER_QUEUE \
+    --producer-endpoint=$PRODUCER_ENDPOINT \
+    --producer-delay=$PRODUCER_DELAY

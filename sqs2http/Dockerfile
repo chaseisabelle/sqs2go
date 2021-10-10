@@ -21,8 +21,8 @@ COPY --from=sqs2http-builder /build/sqs2http .
 CMD ./sqs2http \
     --to=$TO \
     --method=$METHOD \
-    --requeue=$REQUEUE \
-    --
+    --header=$HEADER \
+    --accept=$ACCEPT \
     --workers=$WORKERS \
     --id=$AWS_ID \
     --key=$AWS_KEY \

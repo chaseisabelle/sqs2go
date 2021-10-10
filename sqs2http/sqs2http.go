@@ -58,6 +58,7 @@ func main() {
 		}
 
 		hk := strings.TrimSpace(spl[0])
+		hk = hk[:len(hk)-1]
 
 		if hk == "" {
 			panic(fmt.Errorf("invalid header key: %s", hdr))

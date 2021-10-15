@@ -15,21 +15,22 @@ var client *http.Client
 var to *string
 var method *string
 var headers http.Header
-var accept []int
+var accept map[int]interface{}
 
 func init() {
 	client = &http.Client{}
 	headers = http.Header{}
+	accept = make(map[int]interface{})
 }
 
 func main() {
 	to = flag.String("to", "", "the url to forward the messages to")
 	method = flag.String("method", "GET", "the request method to send the message with")
 
-	var rfz flagz.Flagz
+	var afz flagz.Flagz
 	var hfz flagz.Flagz
 
-	flag.Var(&rfz, "accept", "acceptable http status code(s) - i.e. it will not requeue when these codes are received from the http endpoint")
+	flag.Var(&afz, "accept", "acceptable http status code(s) - i.e. it will not requeue when these codes are received from the http endpoint")
 	flag.Var(&hfz, "header", "the http headers")
 
 	s2g, err := sqs2go.New(handler, nil)
@@ -44,10 +45,14 @@ func main() {
 		panic(err)
 	}
 
-	accept, err = rfz.Intz()
+	acc, err := afz.Intz()
 
 	if err != nil {
 		panic(err)
+	}
+
+	for _, arc := range acc {
+		accept[arc] = nil
 	}
 
 	for _, hdr := range hfz.Stringz() {
@@ -94,12 +99,11 @@ func handler(bod string) error {
 	}
 
 	rsc := res.StatusCode
+	_, ok := accept[rsc]
 
-	for _, acc := range accept {
-		if acc != rsc {
-			return fmt.Errorf("unacceptable http status code %d - requeueing", rsc)
-		}
+	if !ok {
+		err = fmt.Errorf("unacceptable http status code %d - requeueing", rsc)
 	}
 
-	return nil
+	return err
 }

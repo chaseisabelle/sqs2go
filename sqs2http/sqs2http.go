@@ -33,6 +33,8 @@ func main() {
 	flag.Var(&afz, "accept", "acceptable http status code(s) - i.e. it will not requeue when these codes are received from the http endpoint")
 	flag.Var(&hfz, "header", "the http headers")
 
+	flag.Parse()
+
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {

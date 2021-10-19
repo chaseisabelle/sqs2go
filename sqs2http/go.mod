@@ -13,5 +13,3 @@ require (
 	github.com/chaseisabelle/stop v0.0.0-20201003115420-86920b703005 // indirect
 	github.com/jmespath/go-jmespath v0.3.0 // indirect
 )
-
-replace "github.com/chaseisabelle/sqs2go/sqs2go"

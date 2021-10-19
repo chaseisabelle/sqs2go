@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/chaseisabelle/sqsc"
 	"github.com/chaseisabelle/stop"
+	"log"
 	"os"
 	"sync"
 	"time"
@@ -23,6 +24,23 @@ type Configuration struct {
 	SQSC    *sqsc.Config
 }
 
+var configuration *Configuration
+
+func init() {
+	flag.Int("workers", 1, "the number of parallel workers to run")
+	flag.Int("backoff", 250, "interval (milliseconds) between checking for new message after receiving no message")
+	flag.String("id", "", "aws account id (leave blank for no-auth)")
+	flag.String("key", "", "aws account key (leave blank for no-auth)")
+	flag.String("secret", "", "aws account secret (leave blank for no-auth)")
+	flag.String("region", "", "aws region (i.e. us-east-1)")
+	flag.String("url", "", "the sqs queue url")
+	flag.String("queue", "", "the queue name")
+	flag.String("endpoint", "", "the aws endpoint")
+	flag.Int("retries", -1, "the workers number of retries")
+	flag.Int("timeout", 30, "the message visibility timeout in seconds")
+	flag.Int("wait", 0, "wait time in seconds")
+}
+
 func New(han func(string) error, lgr func(error)) (*SQS2Go, error) {
 	if han == nil {
 		return nil, errors.New("handler required")
@@ -33,7 +51,7 @@ func New(han func(string) error, lgr func(error)) (*SQS2Go, error) {
 			_, err = fmt.Fprintln(os.Stderr, err)
 
 			if err != nil {
-				println(err)
+				log.Println(err)
 			}
 		}
 	}
@@ -53,45 +71,36 @@ func (s *SQS2Go) Configure(cfg *Configuration) error {
 		return nil
 	}
 
-	workers := flag.Int("workers", 1, "the number of parallel workers to run")
-	backoff := flag.Int("backoff", 250, "interval (milliseconds) between checking for new message after receiving no message")
-	id := flag.String("id", "", "aws account id (leave blank for no-auth)")
-	key := flag.String("key", "", "aws account key (leave blank for no-auth)")
-	secret := flag.String("secret", "", "aws account secret (leave blank for no-auth)")
-	region := flag.String("region", "", "aws region (i.e. us-east-1)")
-	url := flag.String("url", "", "the sqs queue url")
-	queue := flag.String("queue", "", "the queue name")
-	endpoint := flag.String("endpoint", "", "the aws endpoint")
-	retries := flag.Int("retries", -1, "the workers number of retries")
-	timeout := flag.Int("timeout", 30, "the message visibility timeout in seconds")
-	wait := flag.Int("wait", 0, "wait time in seconds")
+	if !flag.Parsed() {
+		flag.Parse()
+	}
 
-	flag.Parse()
-
-	if *workers <= 0 {
+	configuration = &Configuration{
+		Workers: flag.Lookup("workers").Value.(flag.Getter).Get().(int),
+		Backoff: flag.Lookup("backoff").Value.(flag.Getter).Get().(int),
+		SQSC: &sqsc.Config{
+			ID:       flag.Lookup("id").Value.(flag.Getter).Get().(string),
+			Key:      flag.Lookup("key").Value.(flag.Getter).Get().(string),
+			Secret:   flag.Lookup("secret").Value.(flag.Getter).Get().(string),
+			Region:   flag.Lookup("region").Value.(flag.Getter).Get().(string),
+			Endpoint: flag.Lookup("endpoint").Value.(flag.Getter).Get().(string),
+			Queue:    flag.Lookup("queue").Value.(flag.Getter).Get().(string),
+			URL:      flag.Lookup("url").Value.(flag.Getter).Get().(string),
+			Retries:  flag.Lookup("retries").Value.(flag.Getter).Get().(int),
+			Timeout:  flag.Lookup("timeout").Value.(flag.Getter).Get().(int),
+			Wait:     flag.Lookup("wait").Value.(flag.Getter).Get().(int),
+		},
+	}
+	
+	if configuration.Workers <= 0 {
 		return errors.New("must have 1 or more workers")
 	}
 
-	if *backoff < 0 {
+	if configuration.Backoff < 0 {
 		return errors.New("backoff must be greater than or equal to 0")
 	}
 
-	s.configuration = &Configuration{
-		Workers: *workers,
-		Backoff: *backoff,
-		SQSC: &sqsc.Config{
-			ID:       *id,
-			Key:      *key,
-			Secret:   *secret,
-			Region:   *region,
-			Endpoint: *endpoint,
-			Queue:    *queue,
-			URL:      *url,
-			Retries:  *retries,
-			Timeout:  *timeout,
-			Wait:     *wait,
-		},
-	}
+	s.configuration = configuration
 
 	return nil
 }

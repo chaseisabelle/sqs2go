@@ -14,4 +14,4 @@ require (
 	github.com/jmespath/go-jmespath v0.3.0 // indirect
 )
 
-replace github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210920234022-83a9f8e75425 => /Users/chaseisabelle/Repositories/sqs2go/sqs2go
+//replace github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210920234022-83a9f8e75425 => /Users/chaseisabelle/Repositories/sqs2go/sqs2go

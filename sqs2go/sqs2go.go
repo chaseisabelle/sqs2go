@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/chaseisabelle/flagz"
 	"github.com/chaseisabelle/sqsc"
 	"github.com/chaseisabelle/stop"
 	"log"
@@ -75,23 +76,95 @@ func (s *SQS2Go) Configure(cfg *Configuration) error {
 		flag.Parse()
 	}
 
+	workers, err := flagz.Int("workers")
+
+	if err != nil {
+		return err
+	}
+
+	backoff, err := flagz.Int("backoff")
+
+	if err != nil {
+		return err
+	}
+
+	id, err := flagz.String("id")
+
+	if err != nil {
+		return err
+	}
+
+	key, err := flagz.String("key")
+
+	if err != nil {
+		return err
+	}
+
+	secret, err := flagz.String("secret")
+
+	if err != nil {
+		return err
+	}
+
+	region, err := flagz.String("region")
+
+	if err != nil {
+		return err
+	}
+
+	endpoint, err := flagz.String("endpoint")
+
+	if err != nil {
+		return err
+	}
+
+	queue, err := flagz.String("queue")
+
+	if err != nil {
+		return err
+	}
+
+	url, err := flagz.String("url")
+
+	if err != nil {
+		return err
+	}
+
+	retries, err := flagz.Int("retries")
+
+	if err != nil {
+		return err
+	}
+
+	timeout, err := flagz.Int("timeout")
+
+	if err != nil {
+		return err
+	}
+
+	wait, err := flagz.Int("wait")
+
+	if err != nil {
+		return err
+	}
+
 	configuration = &Configuration{
-		Workers: flag.Lookup("workers").Value.(flag.Getter).Get().(int),
-		Backoff: flag.Lookup("backoff").Value.(flag.Getter).Get().(int),
+		Workers: workers,
+		Backoff: backoff,
 		SQSC: &sqsc.Config{
-			ID:       flag.Lookup("id").Value.(flag.Getter).Get().(string),
-			Key:      flag.Lookup("key").Value.(flag.Getter).Get().(string),
-			Secret:   flag.Lookup("secret").Value.(flag.Getter).Get().(string),
-			Region:   flag.Lookup("region").Value.(flag.Getter).Get().(string),
-			Endpoint: flag.Lookup("endpoint").Value.(flag.Getter).Get().(string),
-			Queue:    flag.Lookup("queue").Value.(flag.Getter).Get().(string),
-			URL:      flag.Lookup("url").Value.(flag.Getter).Get().(string),
-			Retries:  flag.Lookup("retries").Value.(flag.Getter).Get().(int),
-			Timeout:  flag.Lookup("timeout").Value.(flag.Getter).Get().(int),
-			Wait:     flag.Lookup("wait").Value.(flag.Getter).Get().(int),
+			ID:       id,
+			Key:      key,
+			Secret:   secret,
+			Region:   region,
+			Endpoint: endpoint,
+			Queue:    queue,
+			URL:      url,
+			Retries:  retries,
+			Timeout:  timeout,
+			Wait:     wait,
 		},
 	}
-	
+
 	if configuration.Workers <= 0 {
 		return errors.New("must have 1 or more workers")
 	}

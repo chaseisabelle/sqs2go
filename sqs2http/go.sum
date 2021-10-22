@@ -1,8 +1,8 @@
 github.com/aws/aws-sdk-go v1.30.1 h1:cUMxtoFvIHhScZgv17tGxw15r6rVKJHR1hsIFRx9hcA=
 github.com/aws/aws-sdk-go v1.30.1/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/chaseisabelle/backoff v0.0.0-20201003133051-8fca5c0f3877/go.mod h1:Tq754NQvmEAIPplCGgzQMapNN+xFdcoIWXDIYwtYgsU=
-github.com/chaseisabelle/flagz v0.0.0-20201003125634-99eb9812d59a h1:fEWXEPf9bpFjfscUIWoOQTDmrz4nd46H6UjxOTHqKVs=
-github.com/chaseisabelle/flagz v0.0.0-20201003125634-99eb9812d59a/go.mod h1:pIXegjljopDsBxFgU5o6X4Cm4BEHvGI93cnzFutNhpU=
+github.com/chaseisabelle/flagz v0.0.0-20211022193420-183f0ea66d78 h1:UyOT1qtngwDu/nhBhRbXT7bWF8NqOC4w4vl9scqvggw=
+github.com/chaseisabelle/flagz v0.0.0-20211022193420-183f0ea66d78/go.mod h1:pIXegjljopDsBxFgU5o6X4Cm4BEHvGI93cnzFutNhpU=
 github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210920234022-83a9f8e75425 h1:sRY8CVHBFkXEnIKfpN1lXtuqw6aa9gpqYhL3lqzXj0o=
 github.com/chaseisabelle/sqs2go/sqs2go v0.0.0-20210920234022-83a9f8e75425/go.mod h1:Mu3EtvSONr34UYP4Q5kHzazHRNaQviUdV8m19FcV7I8=
 github.com/chaseisabelle/sqsc v0.0.0-20210611213716-4db4d5bb757a h1:VvQ1HgVgnGBw3fcviHOX6Qeywi+o65uNQ3TRMcu84sM=

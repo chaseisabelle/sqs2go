@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/chaseisabelle/sqsc"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -107,44 +108,14 @@ func TestNew_ConfigureSQSC_Success(t *testing.T) {
 
 func TestNew_Start_Success(t *testing.T) {
 	msg := "im watching svu right now"
-	sum := md5.Sum([]byte(msg))
+	pl, err := payload(msg)
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, err := w.Write([]byte(fmt.Sprintf(`
-			<ReceiveMessageResponse>
-			  <ReceiveMessageResult>
-				<Message>
-				  <MessageId>5fea7756-0ea4-451a-a703-a558b933e274</MessageId>
-				  <ReceiptHandle>
-					MbZj6wDWli+JvwwJaBV+3dcjk2YW2vA3+STFFljTM8tJJg6HRG6PYSasuWXPJB+Cw
-					Lj1FjgXUv1uSj1gUPAWV66FU/WeR4mq2OKpEGYWbnLmpRCJVAyeMjeU5ZBdtcQ+QE
-					auMZc8ZRv37sIW2iJKq3M9MFx1YvV11A2x/KSbkJ0=
-				  </ReceiptHandle>
-				  <MD5OfBody>%s</MD5OfBody>
-				  <Body>%s</Body>
-				  <Attribute>
-					<Name>SenderId</Name>
-					<Value>195004372649</Value>
-				  </Attribute>
-				  <Attribute>
-					<Name>SentTimestamp</Name>
-					<Value>1238099229000</Value>
-				  </Attribute>
-				  <Attribute>
-					<Name>ApproximateReceiveCount</Name>
-					<Value>5</Value>
-				  </Attribute>
-				  <Attribute>
-					<Name>ApproximateFirstReceiveTimestamp</Name>
-					<Value>1250700979248</Value>
-				  </Attribute>
-				</Message>
-			  </ReceiveMessageResult>
-			  <ResponseMetadata>
-				<RequestId>b6633655-283d-45b4-aee4-4e84e0ae6afa</RequestId>
-			  </ResponseMetadata>
-			</ReceiveMessageResponse>
-		`, fmt.Sprintf("%x", sum), msg)))
+		_, err := w.Write([]byte(pl))
 
 		if err != nil {
 			t.Error(err)
@@ -200,4 +171,14 @@ func TestNew_Start_Success(t *testing.T) {
 	if act != msg {
 		t.Errorf("expected %s, got %s", msg, act)
 	}
+}
+
+func payload(bod string) (string, error) {
+	bpl, err := ioutil.ReadFile("payload.xml")
+
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf(string(bpl), fmt.Sprintf("%x", md5.Sum([]byte(bod))), bod), nil
 }

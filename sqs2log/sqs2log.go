@@ -9,19 +9,19 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Start()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

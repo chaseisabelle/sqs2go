@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
 	"github.com/chaseisabelle/sqsc"
+	"log"
 )
 
 var client *sqsc.SQSC
@@ -22,13 +23,13 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	client, err = sqsc.New(&sqsc.Config{
@@ -42,13 +43,13 @@ func main() {
 	})
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Start()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

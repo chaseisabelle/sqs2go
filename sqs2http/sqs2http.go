@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/chaseisabelle/flagz"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -38,19 +39,19 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	acc, err := afz.Intz()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	for _, arc := range acc {
@@ -61,14 +62,14 @@ func main() {
 		spl := strings.SplitAfterN(hdr, ":", 2)
 
 		if len(spl) != 2 {
-			panic(fmt.Errorf("invalid header: %s", hdr))
+			log.Fatalln(fmt.Errorf("invalid header: %s", hdr))
 		}
 
 		hk := strings.TrimSpace(spl[0])
 		hk = hk[:len(hk)-1]
 
 		if hk == "" {
-			panic(fmt.Errorf("invalid header key: %s", hdr))
+			log.Fatalln(fmt.Errorf("invalid header key: %s", hdr))
 		}
 
 		headers.Add(hk, strings.TrimSpace(spl[1]))
@@ -77,7 +78,7 @@ func main() {
 	err = s2g.Start()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

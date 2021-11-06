@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
+	"log"
 )
 
 var delimiter *string
@@ -14,19 +15,19 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Start()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

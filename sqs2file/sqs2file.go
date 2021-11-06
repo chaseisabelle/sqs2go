@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
+	"log"
 	"os"
 )
 
@@ -20,25 +21,25 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	file, err = os.OpenFile(*filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.FileMode(*permissions))
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Start()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

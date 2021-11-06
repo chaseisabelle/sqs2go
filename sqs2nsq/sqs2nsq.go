@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/chaseisabelle/sqs2go/sqs2go"
 	"github.com/nsqio/go-nsq"
+	"log"
 	"time"
 )
 
@@ -23,13 +24,13 @@ func main() {
 	s2g, err := sqs2go.New(handler, nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Configure(nil)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	cfg := nsq.NewConfig()
@@ -43,7 +44,7 @@ func main() {
 	producer, err = nsq.NewProducer(*to, cfg)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	err = s2g.Start()
@@ -51,7 +52,7 @@ func main() {
 	producer.Stop()
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 }
 

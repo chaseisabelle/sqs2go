@@ -1,12 +1,16 @@
 # sqs2nothing
 
-_forward messages from sqs to...nothing_
+_forward messages from sqs to an http endpoint_
 
 ---
 
 ### description
 
-use this tool to consume messages from an sqs queue and just drop them. essentially, this will just drain a queue.
+use this tool to consume messages from an sqs queue and forward them to an http endpoint
+
+### example
+
+see a fully functioning example [here](https://github.com/chaseisabelle/sqs2go-examples/sqs2http)
 
 ### usage
 
@@ -47,5 +51,13 @@ use this tool to consume messages from an sqs queue and just drop them. essentia
             wait time in seconds
       -workers int
             the number of parallel workers to run (default 1)
+      -accept value
+            acceptable http status code(s) - i.e. it will not requeue when these codes are received from the http endpoint
+      -header value
+            the http headers
+      -method string
+            the request method to send the message with (default "GET")
+      -to string
+            the url to forward the messages to
     ```
 

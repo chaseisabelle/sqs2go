@@ -6,7 +6,11 @@ _forward messages from sqs to standard logger_
 
 ### description
 
-use this tool to consume messages from an sqs queue to standard logger.
+use this tool to consume messages from an sqs queue to standard logger
+
+### example
+
+see a fully functioning example [here](https://github.com/chaseisabelle/sqs2go-examples/sqs2log)
 
 ### usage
 

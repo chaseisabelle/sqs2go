@@ -8,6 +8,10 @@ _forward messages from sqs to a file_
 
 use this tool to consume messages from an sqs queue to a file.
 
+### example
+
+see a fully functioning example [here](https://github.com/chaseisabelle/sqs2go-examples/sqs2file)
+
 ### usage
 
 * `make`
@@ -47,5 +51,11 @@ use this tool to consume messages from an sqs queue to a file.
             wait time in seconds
       -workers int
             the number of parallel workers to run (default 1)
+      -filename string
+            the file name
+      -delimiter string
+            the message delimiter
+      - permissions int     
+            file permissions (default 0644)
     ```
 

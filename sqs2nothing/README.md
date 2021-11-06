@@ -8,6 +8,10 @@ _forward messages from sqs to...nothing_
 
 use this tool to consume messages from an sqs queue and just drop them. essentially, this will just drain a queue.
 
+### example
+
+see a fully functioning example [here](https://github.com/chaseisabelle/sqs2go-examples/sqs2nothing)
+
 ### usage
 
 * `make`

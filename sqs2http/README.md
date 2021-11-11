@@ -1,4 +1,4 @@
-# sqs2nothing
+# sqs2http
 
 _forward messages from sqs to an http endpoint_
 
